@@ -8,6 +8,7 @@ This Python project reads student grade data from a CSV file, calculates each st
 - `students.csv` - sample student grade data
 - `grade_results.csv` - generated after the program runs
 - `test_student_grade_calculator.py` - automated calculation and grade-boundary tests
+- `test_csv_workflow.py` - end-to-end validation of the supplied CSV sample
 
 ## How to run
 1. Install Python 3.
@@ -51,7 +52,11 @@ python -m unittest -v
 The tests check a sample average and 10 letter-grade cases, including
 values at and just below each passing-grade boundary. They use Python's
 built-in `unittest` module and require no additional packages.
-These tests cover the calculation functions, not CSV reading or writing.
+An end-to-end test also runs the unchanged script with the included
+`students.csv` in a temporary folder and checks the generated CSV header
+and all five expected records, including row order, two-decimal averages,
+and letter grades. It leaves the repository's CSV files untouched.
+This covers the supplied valid sample; malformed-input handling is not tested.
 
 ## Skills demonstrated
 - Python functions
