@@ -8,7 +8,7 @@ This Python project reads student grade data from a CSV file, calculates each st
 - `students.csv` - sample student grade data
 - `grade_results.csv` - generated after the program runs
 - `test_student_grade_calculator.py` - automated calculation and grade-boundary tests
-- `test_csv_workflow.py` - end-to-end validation of the supplied CSV sample
+- `test_csv_workflow.py` - end-to-end tests of the supplied CSV sample and malformed inputs
 
 ## How to run
 1. Install Python 3.
@@ -56,7 +56,12 @@ An end-to-end test also runs the unchanged script with the included
 `students.csv` in a temporary folder and checks the generated CSV header
 and all five expected records, including row order, two-decimal averages,
 and letter grades. It leaves the repository's CSV files untouched.
-This covers the supplied valid sample; malformed-input handling is not tested.
+Malformed-input tests also check the script's existing failure behavior:
+nonnumeric and blank scores raise `ValueError`, a missing required column
+raises `KeyError`, and a short row with an absent score raises `TypeError`.
+Each case exits unsuccessfully without creating `grade_results.csv` in its
+temporary folder. These tests document uncaught exceptions; the program
+does not provide friendly input-validation errors.
 
 ## Skills demonstrated
 - Python functions

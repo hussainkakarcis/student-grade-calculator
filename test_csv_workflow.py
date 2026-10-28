@@ -8,6 +8,31 @@ import unittest
 
 
 class CsvWorkflowTests(unittest.TestCase):
+    def test_malformed_csv_workflow(self):
+        project = Path(__file__).resolve().parent
+        header = "Name,Assignment1,Assignment2,Exam\n"
+        cases = [
+            ("nonnumeric score", header + "Amina,92,88,invalid\n", "ValueError"),
+            ("blank score", header + "Amina,92,88,\n", "ValueError"),
+            ("missing column", "Name,Assignment1,Assignment2\nAmina,92,88\n", "KeyError"),
+            ("short row", header + "Amina,92,88\n", "TypeError"),
+        ]
+        for label, contents, exception in cases:
+            with self.subTest(case=label), tempfile.TemporaryDirectory() as folder:
+                workdir = Path(folder)
+                (workdir / "students.csv").write_text(contents, encoding="utf-8")
+                result = subprocess.run(
+                    [sys.executable, str(project / "student_grade_calculator.py")],
+                    cwd=workdir,
+                    capture_output=True,
+                    text=True,
+                    timeout=10,
+                )
+
+                self.assertNotEqual(result.returncode, 0)
+                self.assertTrue(result.stderr.splitlines()[-1].startswith(exception + ":"))
+                self.assertFalse((workdir / "grade_results.csv").exists())
+
     def test_sample_csv_workflow(self):
         project = Path(__file__).resolve().parent
         with tempfile.TemporaryDirectory() as folder:
