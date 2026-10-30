@@ -1,5 +1,7 @@
 # Student Grade Calculator
 
+[![Tests](https://github.com/hussainkakarcis/student-grade-calculator/actions/workflows/tests.yml/badge.svg)](https://github.com/hussainkakarcis/student-grade-calculator/actions/workflows/tests.yml)
+
 ## What this project does
 This Python project reads student grade data from a CSV file, calculates each student's average, assigns a letter grade, displays the results, and saves the results to a new CSV file.
 
