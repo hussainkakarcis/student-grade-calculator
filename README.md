@@ -58,12 +58,21 @@ An end-to-end test also runs the unchanged script with the included
 `students.csv` in a temporary folder and checks the generated CSV header
 and all five expected records, including row order, two-decimal averages,
 and letter grades. It leaves the repository's CSV files untouched.
-Malformed-input tests also check the script's existing failure behavior:
-nonnumeric and blank scores raise `ValueError`, a missing required column
-raises `KeyError`, and a short row with an absent score raises `TypeError`.
-Each case exits unsuccessfully without creating `grade_results.csv` in its
-temporary folder. These tests document uncaught exceptions; the program
-does not provide friendly input-validation errors.
+Input validation requires the Name, Assignment1, Assignment2, and Exam columns,
+a nonblank name, and finite numeric scores from 0 through 100 (inclusive).
+Invalid input produces a concise `Error:` message with the record row and field
+where applicable, exits with status 1, and does not create or overwrite the
+output CSV. Record rows count the header as row 1. Correct the input and rerun;
+an output left from an earlier successful run is not a new result.
+
+Tests cover missing/blank/nonnumeric scores, missing names and columns,
+duplicate headers, extra values, short rows, non-finite and out-of-range scores,
+missing input files, and preservation of previous output when a later row is
+invalid. Valid sample output remains unchanged.
+
+GitHub Actions runs `python -m unittest -v` on every push and pull request,
+using Python 3.12 on Ubuntu. The workflow uses Node 24-based checkout and
+setup-python actions.
 
 ## Skills demonstrated
 - Python functions

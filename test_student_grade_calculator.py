@@ -1,8 +1,13 @@
 import unittest
-from student_grade_calculator import calculate_average, get_letter_grade
+from student_grade_calculator import calculate_average, get_letter_grade, parse_score
 
 
 class GradeCalculatorTests(unittest.TestCase):
+    def test_valid_score_limits(self):
+        for value, expected in [("0", 0), ("100", 100), (" 85.5 ", 85.5)]:
+            with self.subTest(value=value):
+                self.assertEqual(parse_score(value, 2, "Exam"), expected)
+
     def test_sample_average(self):
         self.assertAlmostEqual(calculate_average([92, 88, 94]), 274 / 3)
 
